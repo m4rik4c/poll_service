@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Benvenuto nella tua dashboard personale!</h1>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        <!-- Sezione per visualizzare i messaggi di successo o errore -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <h2>I tuoi sondaggi autorizzati:</h2>
+        
+        {% if polls %}
+            <ul class="poll-list">
+                {% for poll in polls %}
+                    <li class="poll-item">
+                        <strong>{{ poll.description }}</strong> - Creato da {{ poll.owner }}
+                        <p><strong>Data di scadenza:</strong> {{ poll.expiration_date if poll.expiration_date else 'Senza scadenza' }}</p>
+                        <p><strong>Data e ora attuali:</strong> {{ current_time }}</p>
+
+                        {% if poll.expiration_date %}
+                            {% if poll.expiration_date < current_time %}
+                                <span class="expired">Sondaggio Scaduto</span>
+                            {% else %}
+                                <span class="valid">Sondaggio Attivo</span>
+                            {% endif %}
+                        {% endif %}
+
+                        <a href="{{ url_for('show_poll', poll_id=poll.id) }}" class="view-poll-btn">Visualizza</a>
+
+                        <!-- Verifica se l'utente è l'admin o il proprietario -->
+                        {% if session['utente']['role'] == 'admin' or session['utente']['username'] == poll.owner %}
+                            <form action="{{ url_for('delete_poll', poll_id=poll.id) }}" method="post" onsubmit="return confirm('Sei sicuro di voler eliminare questo sondaggio?');">
+                                <button type="submit">Elimina Sondaggio</button>
+                            </form>
+                        {% else %}
+                            <p>Non puoi eliminare/modificare il sondaggio perchè non ne sei il proprietario</p>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Non ci sono sondaggi disponibili al momento.</p>
+        {% endif %}
+
+        <h3>Accedi a un sondaggio tramite token:</h3>
+        <form action="{{ url_for('access_poll') }}" method="POST">
+            <label for="token">Inserisci il token del sondaggio:</label>
+            <input type="text" id="token" name="token" required>
+            <button type="submit">Accedi a un nuovo sondaggio tramite token</button>
+        </form>
+
+        <a href="{{ url_for('create_poll') }}" class="create-poll-btn">Crea un nuovo sondaggio</a>
+    </div>
+</body>
+</html>

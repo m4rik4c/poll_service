@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Benvenuto nella tua Dashboard ADMIN!</h1>
+        <a href="{{ url_for('logout') }}">Logout</a>
+
+        <!-- Sezione per visualizzare i messaggi di successo o errore -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="admin-buttons">
+            <form action="{{ url_for('admin_polls') }}" method="get">
+                <button type="submit" class="admin-btn btn-large">Visualizza tutti i sondaggi</button>
+            </form>
+            <form action="{{ url_for('admin_users') }}" method="get">
+                <button type="submit" class="admin-btn btn-large">Visualizza lista utenti registrati</button>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

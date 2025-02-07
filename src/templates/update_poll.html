@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiorna Sondaggio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Aggiorna Sondaggio</h1>
+        
+        <!-- Se ci sono messaggi flash -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=True) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <!-- Form per aggiornare il sondaggio -->
+        <form method="POST" action="{{ url_for('update_poll', poll_id=poll['id']) }}">
+            <h2>Descrizione</h2>
+            <input type="text" name="description" value="{{ poll['description'] }}" placeholder="Inserisci una nuova descrizione" required>
+            
+            <h2>Opzioni</h2>
+            <div id="options-container">
+                {% for option in poll['options'] %}
+                    <input type="text" name="options[]" value="{{ option }}" placeholder="Modifica un'opzione" required>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="addOption()">Aggiungi Opzione</button>
+            
+            <h2>Data di Scadenza</h2>
+            <input type="datetime-local" name="expiration_date" value="{{ poll['expiration_date'] | default('', true) }}">
+            
+            <button type="submit">Aggiorna Sondaggio</button>
+        </form>
+        
+        <a href="{{ url_for('dashboard') }}">Torna alla Dashboard</a>
+    </div>
+    
+    <script>
+        // Script per aggiungere nuove opzioni dinamicamente
+        function addOption() {
+            const container = document.getElementById('options-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'options[]';
+            input.placeholder = 'Inserisci un\'altra opzione';
+            container.appendChild(input);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizza Sondaggio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Visualizza Sondaggio</h1>
+
+    {% if user.role == 'admin' %}
+        <a href="{{ url_for('admin_dashboard') }}">Torna alla Dashboard Admin</a>
+    {% else %}
+        <a href="{{ url_for('dashboard') }}">Torna alla Dashboard</a>
+    {% endif %}
+
+    <h2>{{ poll.description }}</h2>
+    <p><strong>Proprietario:</strong> {{ poll.owner.username }}</p>
+
+    {% if expiration_date %}
+        {% if expiration_date < current_time %}
+            <span class="expired">Sondaggio Scaduto</span>
+        {% else %}
+            <span class="valid">Sondaggio Attivo</span>
+        {% endif %}
+    {% else %}
+        <span class="no-expiration">Senza scadenza</span>
+    {% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Aggiungi Debug per visualizzare poll.options e poll.votes 
+    <h3>Debug: Opzioni e Conteggio Voti</h3>
+    <p><strong>Opzioni disponibili:</strong></p>
+    <ul>
+        {% for option in poll.options %}
+            <li>{{ option }}</li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Conteggio Voti:</strong></p>
+    <ul>
+        {% for vote in poll.votes %}
+            <li>{{ vote }}</li>
+        {% endfor %}
+    </ul>-->
+
+    <!-- Sezione per votare -->
+    {% if expiration_date is none or expiration_date >= current_time %}
+        <form action="{{ url_for('vote_poll', poll_id=poll.id) }}" method="post">
+            <fieldset>
+                <legend>Scegli la tua opzione:</legend>
+                {% for option, vote_count in zip(poll.options, poll.votes) %}
+                    <div>
+                        <input type="radio" id="option_{{ loop.index }}" name="option" value="{{ option }}" required>
+                        <label for="option_{{ loop.index }}">{{ option }}</label><br>
+                        <strong>Conteggio Voti: </strong>{{ vote_count }}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <button type="submit">Vota</button>
+        </form>
+    {% else %}
+        <p>Il sondaggio non è più attivo e non è possibile votare.</p>
+    {% endif %}
+
+    <!-- Pulsante per condividere sondaggio (mostrato a tutti) -->
+    <form action="{{ url_for('share_poll', poll_id=poll.id) }}" method="get">
+        <button type="submit">Condividi sondaggio</button>
+    </form>
+
+    <!-- Pulsanti per l'admin o il proprietario -->
+    {% if session['utente']['role'] == 'admin' or  session['utente']['username'] == poll.owner.username %}
+        {% if expiration_date is none or expiration_date >= current_time %}
+            <form action="{{ url_for('update_poll', poll_id=poll.id) }}" method="get">
+                <button type="submit">Modifica sondaggio</button>
+            </form>
+        {% else %}
+            <p>Il sondaggio è scaduto e non può essere modificato.</p>
+        {% endif %}
+    {% endif %} 
+</body>
+</html>
+

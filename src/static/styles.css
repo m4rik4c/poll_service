@@ -1,0 +1,207 @@
+/* Contenitore centrale */
+.container {
+    width: 80%;
+    max-width: 600px; /* Limita la larghezza massima per una buona leggibilità */
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Stili per i messaggi di errore e successo */
+.flash-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flash-error, .flash-success {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    opacity: 0; /* Partiamo da invisibile */
+    animation: fadeIn 2s forwards; /* Fade-in per l'entrata */
+}
+
+.flash-error {
+    background-color: #f44336; /* Rosso per errore */
+}
+
+.flash-success {
+    background-color: #4CAF50; /* Verde per successo */
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.flash-error.fade-out, .flash-success.fade-out {
+    animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+/* Stili generali per i form */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+input[type="text"], input[type="password"] {
+    padding: 10px;
+    margin: 10px 0;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #e27821;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+button[type="submit"]:hover {
+    background-color: #e27821;
+}
+
+/* Link */
+a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Stili per la Dashboard */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc; /* Colore di sfondo chiaro per la dashboard */
+    color: #333; /* Testo scuro per la leggibilità */
+}
+
+h1, h2, h3 {
+    color: #e27821; /* Verde per i titoli */
+}
+
+h2 {
+    margin-top: 40px;
+    font-size: 1.8em;
+}
+
+h3 {
+    font-size: 1.4em;
+    margin-top: 30px;
+}
+
+/* Elenco dei sondaggi */
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+li p {
+    margin: 5px 0;
+}
+
+li a {
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+li a:hover {
+    text-decoration: underline;
+}
+
+/* Bottoni e form */
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+    padding: 10px;
+    width: 80%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Link nel corpo */
+a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Colori per i messaggi Flash */
+.flash-error {
+    background-color: #f44336;
+}
+
+.flash-success {
+    background-color: #4CAF50;
+}
+

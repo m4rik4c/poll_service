@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crea Sondaggio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Crea un Nuovo Sondaggio</h1>
+    </header>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <form action="{{ url_for('create_poll') }}" method="POST">
+        <label for="description">Descrizione del Sondaggio:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="options">Opzioni del Sondaggio:</label><br>
+        <div id="options-container">
+            <input type="text" name="options" placeholder="Opzione 1" required><br>
+            <input type="text" name="options" placeholder="Opzione 2" required><br>
+        </div>
+        <button type="button" id="add-option">Aggiungi Opzione</button><br><br>
+
+        <!-- Aggiungi il campo per la data di scadenza -->
+        <label for="expiration_date">Data di Scadenza:</label><br>
+        <input type="datetime-local" id="expiration_date" name="expiration_date"><br><br>
+
+        <button type="submit">Crea Sondaggio</button>
+    </form>
+
+    <script>
+        // Script per aggiungere dinamicamente opzioni al sondaggio
+        document.getElementById('add-option').addEventListener('click', function() {
+            const container = document.getElementById('options-container');
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'options';
+            input.placeholder = `Opzione ${container.children.length / 2 + 1}`; // Calcola il numero dell'opzione
+            input.required = true;
+            container.appendChild(input);
+            container.appendChild(document.createElement('br'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi al Sondaggio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Accedi al Sondaggio</h1>
+    <a href="{{ url_for('dashboard') }}">Torna alla Dashboard</a>
+
+    <h2>Inserisci il token per accedere al sondaggio:</h2>
+    <form action="{{ url_for('access_poll') }}" method="POST">
+        <label for="token">Token:</label>
+        <input type="text" id="token" name="token" required>
+        <button type="submit">Accedi</button>
+    </form>
+</body>
+</html>

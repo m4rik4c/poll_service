@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Blocco per i messaggi flash -->
+        <div class="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        
+        <h1>Benvenuto!</h1>
+        <p>Accedi al tuo account o registrati per iniziare.</p>
+        <a class="btn" href="{{ url_for('login') }}">Login</a> | 
+        <a class="btn" href="{{ url_for('register') }}">Registrati</a>
+    </div>
+</body>
+</html>
+

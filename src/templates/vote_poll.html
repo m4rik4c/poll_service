@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+
+<h2>Voto per: {{ poll['description'] }}</h2>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div class="flash-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<form action="{{ url_for('vote_poll', poll_id=poll['id']) }}" method="post">
+    <fieldset>
+        <legend>Seleziona la tua risposta:</legend>
+        {% for option in poll['options'] %}
+            <div>
+                <input type="radio" id="option_{{ loop.index }}" name="option" value="{{ option }}" required>
+                <label for="option_{{ loop.index }}">{{ option }}</label>
+            </div>
+        {% endfor %}
+    </fieldset>
+    <button type="submit">Conferma il voto</button>
+</form>
+
+{% endblock %}
+
