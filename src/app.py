@@ -652,7 +652,7 @@ def vote_poll(poll_id):
     user_from_db = db['users'].find_one({'username': user['username']}) if user else None
 
     if user.get('status') == 'blocked':
-        flash('Sei stato bloccato da admin: non sei autorizzato alla creazione di sondaggi!', 'error')
+        flash('Sei stato bloccato da admin: non sei autorizzato al voto dei sondaggi!', 'error')
         return redirect(url_for('dashboard'))
 
     # Verifico se l'utente è presente sia nella sessione che nel database
